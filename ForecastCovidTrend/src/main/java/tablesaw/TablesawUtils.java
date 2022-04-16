@@ -20,6 +20,7 @@ import tech.tablesaw.selection.Selection;
  * @author Mananai Saengsuwan
  *
  */
+@Deprecated
 public class TablesawUtils {
 	public static Table group(Table table, List<String> columnNames, String dateName, String valueName, String groupName) {
 		

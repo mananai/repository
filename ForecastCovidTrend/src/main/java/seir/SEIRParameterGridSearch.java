@@ -2,14 +2,26 @@ package seir;
 
 import static java.util.stream.Collectors.toList;
 
+import static seir.SEIRParametersRanges.MIN_ALPHA;
+import static seir.SEIRParametersRanges.MAX_ALPHA;
+import static seir.SEIRParametersRanges.MIN_BETA;
+import static seir.SEIRParametersRanges.MAX_BETA;
+import static seir.SEIRParametersRanges.MIN_INCUBATION_PERIOD;
+import static seir.SEIRParametersRanges.MAX_INCUBATION_PERIOD;
+import static seir.SEIRParametersRanges.MIN_INFECTIOUS_PERIOD;
+import static seir.SEIRParametersRanges.MAX_INFECTIOUS_PERIOD;
+
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.SortedSet;
-import java.util.Map.Entry;
+//import java.util.Map.Entry;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.DoubleStream;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 
 import gridsearch.Grid;
 import gridsearch.GridSearch;
@@ -21,18 +33,10 @@ import tech.tablesaw.api.Table;
  * @author Mananai Saengsuwan
  *
  */
+@Deprecated
 public class SEIRParameterGridSearch {
 	
-	private static final double START_ALPHA = 5e-6;
-	private static final double END_ALPHA = 1e-4;
-	private static final double START_BETA = 0.05;
-	private static final double END_BETA = 1.0;
-	private static final double START_INCUBATION_PERIOD = 4.8;
-	private static final double END_INCUBATION_PERIOD = 5.6;
-	private static final double START_INFECTIOUS_PERIOD = 4.0;
-	private static final double END_INFECTIOUS_PERIOD = 9.0;
-
-	public SortedSet<Entry<ModelParameter, Double>> search(Table table,
+	public SortedSet<Pair<ModelParameter, Double>> search(Table table,
 			Predicate<ModelParameter> constraint, int maxSearchResult, int numSteps){
 		final int rowCount = table.rowCount();
 		//First row is for the initial conditions
@@ -47,12 +51,12 @@ public class SEIRParameterGridSearch {
 		final double[] newDeaths = table.last(rowCount-1).intColumn("Deaths").asDoubleArray();
 		final double initExposed = 2*initInfectiousCount;
 				
-		List<Double> alphas = arithematicSequences(START_ALPHA, END_ALPHA, numSteps);
-		List<Double> betas = arithematicSequences(START_BETA, END_BETA, numSteps);
+		List<Double> alphas = arithematicSequences(MIN_ALPHA, MAX_ALPHA, numSteps);
+		List<Double> betas = arithematicSequences(MIN_BETA, MAX_BETA, numSteps);
 		//Incubation period is 5.2 days
-		List<Double> epsilons = inverseSequences(START_INCUBATION_PERIOD, END_INCUBATION_PERIOD, 9);
+		List<Double> epsilons = inverseSequences(MIN_INCUBATION_PERIOD, MAX_INCUBATION_PERIOD, 9);
 		//Infectious period is 5 days
-		List<Double> gammas = inverseSequences(START_INFECTIOUS_PERIOD, END_INFECTIOUS_PERIOD, 11);
+		List<Double> gammas = inverseSequences(MIN_INFECTIOUS_PERIOD, MAX_INFECTIOUS_PERIOD, 11);
 		List<Double> exposedes = geometricSequences(initExposed, 10*initExposed, numSteps);
 		List<Double> infectiouses = geometricSequences(initInfectiousCount, 10*initInfectiousCount, numSteps);
 		List<Double> recoveredes = geometricSequences(initRecoveredCount, 10*initRecoveredCount, numSteps);
@@ -99,7 +103,7 @@ public class SEIRParameterGridSearch {
 		return DoubleStream.iterate(start, x->x*commonRatio).limit(length).boxed().collect(toList());
 	}
 
-	protected double rmse(double[] values, double[] targets){
+	public static double rmse(double[] values, double[] targets){
 		if ( values.length != targets.length)
 			throw new IllegalArgumentException();
 
