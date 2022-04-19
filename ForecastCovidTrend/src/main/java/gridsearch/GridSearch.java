@@ -32,10 +32,6 @@ public class GridSearch<T> {
 	public SortedSet<Pair<T, Double>> run(Grid<T> grid, Predicate<T> constraint,
 			ToDoubleFunction<T> objective, int numResults){
 		
-//		out.printf("Total memory=%,dM\n", Runtime.getRuntime().totalMemory()/1000000);
-//		out.println("Starting grid search...");
-//		long start = System.currentTimeMillis();
-		
 		final int numConsumers = Runtime.getRuntime().availableProcessors()-2;
 		int[] parameterCounts = {0};
 	
@@ -62,7 +58,6 @@ public class GridSearch<T> {
 					throw new RuntimeException(e);
 				}
 			};
-//			logger.debug("Producer has put %,d parameters\n", parametersCounts[0]);
 		}));
 		
 		for (int i = 0 ; i < numConsumers ; i++){
@@ -81,7 +76,6 @@ public class GridSearch<T> {
 						T params = optionalParams.get();
 						double cost = objective.applyAsDouble(params);
 						boundSet.add(new ImmutablePair<T, Double>(params, cost));
-//						processedCount++;
 					}
 					else
 						break;
@@ -113,10 +107,6 @@ public class GridSearch<T> {
 			else
 				break;
 		}
-//		long end = System.currentTimeMillis();
-//		out.printf("Finished grid search. Took %d seconds to search %,d parameters. Found %,d result.\n", 
-//				(end-start)/1000, parameterCounts[0], resultSet.size());
-//		out.printf("Total memory=%,dM\n", Runtime.getRuntime().totalMemory()/1000000);
 
 		return resultSet;
 	}

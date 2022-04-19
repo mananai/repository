@@ -12,7 +12,6 @@ import tech.tablesaw.io.csv.CsvReadOptions;
 import tech.tablesaw.io.xlsx.XlsxReadOptions;
 
 public class CovidCasesData {
-//	static final int NUM_DAYS = 60;
 	static final String GET_CASES_BRIEFINGS_CSV_URL = "https://raw.githubusercontent.com/wiki/djay/covidthailand/cases_briefings.csv";
 	static final String POPULATION_FILE = "/Users/mananai/Downloads/sector_01_11101_EN_.xlsx";
 

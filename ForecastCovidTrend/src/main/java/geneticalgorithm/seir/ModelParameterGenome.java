@@ -86,22 +86,6 @@ public class ModelParameterGenome implements Genome {
 				throw new IllegalArgumentException();
 			}
 		}
-		
-		
-//		if ( fitness.isEmpty()) {
-//			if ( this.isCalculating.compareAndSet(false, true) ) {
-//				if (env instanceof SEIREnvironment) {
-//					SEIREnvironment environment = (SEIREnvironment) env;
-//					parameter = decode(this.genome, environment);
-//					fitness = Optional.of( rmse(new SEIRModel(parameter).run(environment.getTargetDeaths().length).getNewDeath(), environment.getTargetDeaths()));
-//				}
-//				else {
-//					throw new IllegalArgumentException();
-//				}
-//			}
-//			
-//		}
-//		return fitness.get();
 	}
 	
 	@Override
@@ -160,63 +144,5 @@ public class ModelParameterGenome implements Genome {
 		return Math.sqrt(sum/values.length);
 	}
 
-
-	
-//////////////////////////////////////////////////////////////////////////
-// Unused
-//////////////////////////////////////////////////////////////////////////
-
-	
-
-
-	public ModelParameterGenome[] crossover2(Genome theOther) {
-		byte[] child0 = new byte[genes.length];
-		byte[] child1 = new byte[genes.length];
-		int crossoverPoint = 1 + random.nextInt(genes.length-1-1);
-		System.arraycopy(genes, 0, child0, 0, crossoverPoint);
-		System.arraycopy(((ModelParameterGenome)theOther).genes, crossoverPoint, child0, crossoverPoint, genes.length - crossoverPoint);
-		System.arraycopy(((ModelParameterGenome)theOther).genes, 0, child1, 0, crossoverPoint);
-		System.arraycopy(genes, crossoverPoint, child1, crossoverPoint, genes.length - crossoverPoint);
-		return new ModelParameterGenome[] {new ModelParameterGenome(child0), new ModelParameterGenome(child1) };
-	}
-
-
-	@SuppressWarnings("unused")
-	private byte flipRandomBit0(byte b) {
-		try {
-			int i = Byte.toUnsignedInt(b);
-			int numOfBits = 8- (Integer.numberOfLeadingZeros(i)-24);
-//			if (numOfBits == 0)
-//				return 1;
-//		System.out.println(numOfBits);
-			int randomPos = random.nextInt(numOfBits+1);
-			int j = i^ ( 1<< randomPos);
-			return (byte)j;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.err.println("byte="+b);
-			throw e;
-		}
-//		System.out.printf("b%s\n", Integer.toBinaryString(i));
-//		System.out.printf("b%s\n", Integer.toBinaryString(j));
-	}
-
-
-//	@Override
-//	public boolean equals(Object obj) {
-//		if (obj instanceof ModelGenome) {
-//			return Arrays.compare(this.genome, ((ModelGenome)obj).genome)==0;
-//		}
-//		return false;
-//	}
-//
-//	@Override
-//	public int hashCode() {
-//		return Arrays.hashCode(genome);
-//	}
-	
-	
-	
 	
 }

@@ -15,16 +15,13 @@ public class ModelParameter implements Cloneable {
 	private double beta;
 	private double epsilon;
 	private double gamma;
-	
 	private double exposed;
 	private double infectious;
 	private double recovered;
-
 	private double death;
 	
 	public ModelParameter(double alpha, double beta, double epsilon, double gamma,
 			double exposed, double infectious, double recovered, double death) {
-
 		super();
 		this.alpha = alpha;
 		this.beta = beta;
@@ -73,6 +70,10 @@ public class ModelParameter implements Cloneable {
 		return death;
 	}
 
+//	public double getNewDeath() {
+//		return newDeath;
+//	}
+
 	public static int getPopulation() {
 		return population.get();
 	}
@@ -116,10 +117,6 @@ public class ModelParameter implements Cloneable {
 			throw new IllegalStateException("The value is already set");
 	}
 
-//	public void setNewDeath(double newDeath) {
-//		this.newDeath = newDeath;
-//	}
-	
 	public double getR0() {
 		return beta/(gamma+alpha);
 	}

@@ -6,14 +6,12 @@ import tech.tablesaw.api.Table;
 import org.apache.commons.lang3.tuple.Pair;
 
 public interface ModelParameterSearch {
-//	Pair<ModelParameter, Double> search(Table cases);
 	
 	default Pair<ModelParameter, Double> search(Table cases){
 		final int rowCount = cases.rowCount();
 		
 		//First row is for the initial conditions
 		final LocalDate initDate =cases.dateColumn("Date").get(0);
-//		final LocalDate endDate =dateColumn.get(rowCount-1);
 		final double initInfectious = cases.doubleColumn("Cumulative Infectious").get(0);
 		final double initRecovered = cases.doubleColumn("Cumulative Recovered").get(0);
 		final double initDeaths = cases.doubleColumn("Cumulative Death").get(0);
